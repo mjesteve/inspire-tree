@@ -89,7 +89,8 @@ class InspireTree extends EventEmitter2 {
                 disableDirectDeselection: false,
                 mode: 'default',
                 multiple: false,
-                require: false
+                require: false,
+                checkedIsSelected: false
             },
             showCheckboxes: false,
             sort: false
@@ -97,36 +98,65 @@ class InspireTree extends EventEmitter2 {
 
         // If checkbox mode, we must force auto-selecting children
         if (this.config.selection.mode === 'checkbox') {
-            this.config.selection.autoSelectChildren = true;
+            // Royale - Maintain the difference between checkbox and selected
+            if (this.config.selection.checkedIsSelected) {
+                this.config.selection.autoSelectChildren = true;
 
-            // In checkbox mode, checked=selected
-            this.on('node.checked', node => {
-                if (!node.selected()) {
-                    node.select(true);
-                }
-            });
+                // In checkbox mode, checked=selected
+                this.on('node.checked', node => {
+                    if (!node.selected()) {
+                        node.select(true);
+                    }
+                });
 
-            this.on('node.selected', node => {
-                if (!node.checked()) {
-                    node.check(true);
-                }
-            });
+                this.on('node.selected', node => {
+                    if (!node.checked()) {
+                        node.check(true);
+                    }
+                });
 
-            this.on('node.unchecked', node => {
-                if (node.selected()) {
-                    node.deselect(true);
-                }
-            });
+                this.on('node.unchecked', node => {
+                    if (node.selected()) {
+                        node.deselect(true);
+                    }
+                });
 
-            this.on('node.deselected', node => {
-                if (node.checked()) {
-                    node.uncheck(true);
-                }
-            });
+                this.on('node.deselected', node => {
+                    if (node.checked()) {
+                        node.uncheck(true);
+                    }
+                });
+            }
+            else {
+                this.on('node.checked', node => {
+                    if (!node.checked()) {
+                        node.checked(true);
+                    }
+                });
+
+                this.on('node.selected', node => {
+                    if (!node.selected()) {
+                        node.selected(true);
+                    }
+                });
+
+                this.on('node.unchecked', node => {
+                    if (node.checked()) {
+                        node.uncheck(true);
+                    }
+                });
+
+                this.on('node.deselected', node => {
+                    if (node.selected()) {
+                        node.deselect(true);
+                    }
+                });
+            }
         }
 
         // If auto-selecting children, we must force multiselect
-        if (this.config.selection.autoSelectChildren) {
+        // Royale
+        if (this.config.selection.autoSelectChildren && this.config.selection.checkedIsSelected) {
             this.config.selection.multiple = true;
             this.config.selection.autoDeselect = false;
         }
