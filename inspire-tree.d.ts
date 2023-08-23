@@ -77,6 +77,7 @@ export interface Config {
         mode?: string;
         multiple?: boolean;
         require?: boolean;
+        checkedIsSelected?: boolean;
     };
     sort?: string;
 }

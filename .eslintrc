@@ -62,7 +62,7 @@
                 }
             }
         }],
-        "linebreak-style": [2, "unix"],
+        "linebreak-style": [2, "windows"],
         "lines-around-comment": [2, {
             "beforeBlockComment": true,
             "beforeLineComment": true,

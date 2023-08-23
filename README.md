@@ -103,6 +103,7 @@ Any calls to `load`-related methods can use the returned promise normally.
     + **mode** - `default` or `checkbox`. Checkbox mode auto-selects children, doesn't auto deselect.
     + **multiple** - Allow multiple nodes to be selected at a time.
     + **require** - Require at least one selected node.
+    + **checkedIsSelected** - Por defecto `false`. Maintain the difference between checkbox and selected. (>= 7.0.0-beta.2c)
 - **sort** - Property to sort by, or a custom sort function.
 
 ## Node Configuration
