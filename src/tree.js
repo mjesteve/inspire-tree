@@ -90,6 +90,8 @@ class InspireTree extends EventEmitter2 {
                 mode: 'default',
                 multiple: false,
                 require: false,
+
+                // Royale
                 checkedIsSelected: false
             },
             showCheckboxes: false,
@@ -316,16 +318,16 @@ class InspireTree extends EventEmitter2 {
         const sort = (arr1, arr2) => {
             if (arr1[0] === arr2[0]) {
                 if (arr1.length > 1 && arr2.length > 1) {
-                    return sort(tail(arr1), tail(arr2))
+                    return sort(tail(arr1), tail(arr2));
                 } else {
-                    return 0
+                    return 0;
                 }
             } else {
-                return arr1[0] > arr2[0] ? 1 : -1
+                return arr1[0] > arr2[0] ? 1 : -1;
             }
-        }
+        };
 
-        return sort(firstNode.indexList(), secondNode.indexList()) === 1 ? [secondNode, firstNode] : [firstNode, secondNode]
+        return sort(firstNode.indexList(), secondNode.indexList()) === 1 ? [secondNode, firstNode] : [firstNode, secondNode];
     }
 
     /**
