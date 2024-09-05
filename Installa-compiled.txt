@@ -1,0 +1,120 @@
+PS E:\mjesteve\LibreriasJS\inspire-tree> npm install --save-dev
+npm ERR! code ERESOLVE
+npm ERR! ERESOLVE unable to resolve dependency tree
+npm ERR!
+npm ERR! While resolving: inspire-tree@7.0.6-dev
+npm ERR! Found: rollup@2.79.1
+npm ERR! node_modules/rollup
+npm ERR!   dev rollup@"^2.79.1" from the root project
+npm ERR! 
+npm ERR! Could not resolve dependency:
+npm ERR! peer rollup@">=0.66.0 <2" from rollup-plugin-uglify@6.0.4
+npm ERR! node_modules/rollup-plugin-uglify
+npm ERR!   dev rollup-plugin-uglify@"^6.0.4" from the root project
+npm ERR!
+npm ERR! Fix the upstream dependency conflict, or retry
+npm ERR! this command with --force or --legacy-peer-deps
+npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
+npm ERR!
+npm ERR!
+npm ERR! For a full report see:
+npm ERR! C:\Users\Raul\AppData\Local\npm-cache\_logs\2024-09-04T21_29_57_607Z-eresolve-report.txt
+
+npm ERR! A complete log of this run can be found in: C:\Users\Raul\AppData\Local\npm-cache\_logs\2024-09-04T21_29_57_607Z-debug-0.log
+PS E:\mjesteve\LibreriasJS\inspire-tree> npm install --legacy-peer-deps --save-dev
+npm WARN deprecated source-map-url@0.4.1: See https://github.com/lydell/source-map-url#deprecated
+npm WARN deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+npm WARN deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm WARN deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+npm WARN deprecated source-map-resolve@0.5.3: See https://github.com/lydell/source-map-resolve#deprecated
+npm WARN deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+npm WARN deprecated @humanwhocodes/config-array@0.11.14: Use @eslint/config-array instead
+npm WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm WARN deprecated sourcemap-codec@1.4.8: Please use @jridgewell/sourcemap-codec instead
+npm WARN deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm WARN deprecated rollup-plugin-node-resolve@5.2.0: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-node-resolve.
+npm WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm WARN deprecated rollup-watch@4.3.1: rollup-watch functionality is now included in Rollup itself
+npm WARN deprecated chokidar@1.7.0: Chokidar 2 will break on node v14+. Upgrade to chokidar 3 with 15x less dependencies.
+npm WARN deprecated rollup-plugin-babel@4.4.0: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-babel.
+npm WARN deprecated rollup-plugin-commonjs@10.1.0: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-commonjs.
+npm WARN deprecated sinon@14.0.2: 16.1.1
+npm WARN deprecated core-js@2.6.12: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
+
+added 589 packages, and audited 590 packages in 43s
+
+49 packages are looking for funding
+  run `npm fund` for details
+
+13 vulnerabilities (4 moderate, 6 high, 3 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+
+-------------------------------------------------------------------
+Según el propietario hay que instalar y compilar con yarn:
+- Instalo yarn:
+  npm install -g yarn
+- Instalo dependencias del proyecto:
+  PS E:\mjesteve\LibreriasJS\inspire-tree> yarn install
+    yarn install v1.22.22
+    [1/4] Resolving packages...
+    [2/4] Fetching packages...
+    [3/4] Linking dependencies...
+    warning " > rollup-plugin-babel@4.4.0" has incorrect peer dependency "rollup@>=0.60.0 <3".
+    warning " > rollup-plugin-uglify@6.0.4" has incorrect peer dependency "rollup@>=0.66.0 <2".
+    [4/4] Building fresh packages...
+    Done in 62.12s.
+- Compilo proyecto:
+  PS E:\mjesteve\LibreriasJS\inspire-tree> yarn build
+    yarn run v1.22.22
+    $ rollup -c
+    (node:5116) ExperimentalWarning: Import assertions are not a stable feature of the JavaScript language. Avoid relying on their current behavior and syntax as those might change in a future version of Node.js.
+    (Use `node --trace-warnings ...` to show where the warning was created)
+    (node:5116) ExperimentalWarning: Importing JSON modules is an experimental feature and might change at any time
+
+    src\tree.js → build\inspire-tree.js...
+    (!) Circular dependencies
+    src/lib/collection-to-model.js -> src/lib/object-to-node.js -> src/lib/collection-to-model.js
+    src/lib/collection-to-model.js -> src/lib/object-to-node.js -> src/treenode.js -> src/lib/collection-to-model.js
+    src/lib/object-to-node.js -> src/treenode.js -> src/lib/object-to-node.js
+    ...and 4 more
+    created build\inspire-tree.js in 10s
+    Done in 13.61s.
+
+- Compilo la distribución:
+ *  Ejecutando tarea: yarn run deploy 
+    yarn run v1.22.22
+    $ cross-env DIST=1 rollup -c && cross-env DIST=1 MIN=1 rollup -c
+    (node:4308) ExperimentalWarning: Import assertions are not a stable feature of the JavaScript language. Avoid relying on their current behavior and syntax as those might change in a future version of Node.js.
+    (Use `node --trace-warnings ...` to show where the warning was created)
+    (node:4308) ExperimentalWarning: Importing JSON modules is an experimental feature and might change at any time
+
+    src\tree.js → dist\inspire-tree.js...
+    (!) Circular dependencies
+    src/lib/collection-to-model.js -> src/lib/object-to-node.js -> src/lib/collection-to-model.js
+    src/lib/collection-to-model.js -> src/lib/object-to-node.js -> src/treenode.js -> src/lib/collection-to-model.js
+    src/lib/object-to-node.js -> src/treenode.js -> src/lib/object-to-node.js
+    ...and 4 more
+    created dist\inspire-tree.js in 2.7s
+    (node:188) ExperimentalWarning: Import assertions are not a stable feature of the JavaScript language. Avoid relying on their current behavior and syntax as those 
+    might change in a future version of Node.js.
+    (Use `node --trace-warnings ...` to show where the warning was created)
+    (node:188) ExperimentalWarning: Importing JSON modules is an experimental feature and might change at any time
+
+    src\tree.js → dist\inspire-tree.min.js...
+    (!) Circular dependencies
+    src/lib/collection-to-model.js -> src/lib/object-to-node.js -> src/lib/collection-to-model.js
+    src/lib/collection-to-model.js -> src/lib/object-to-node.js -> src/treenode.js -> src/lib/collection-to-model.js
+    src/lib/object-to-node.js -> src/treenode.js -> src/lib/object-to-node.js
+    ...and 4 more
+    created dist\inspire-tree.min.js in 5.3s
+    Done in 9.67s.

@@ -1,5 +1,5 @@
 /* Inspire Tree
- * @version 7.0.6
+ * @version 7.0.6-dev
  * https://github.com/helion3/inspire-tree
  * @copyright Copyright 2015 Helion3, and other contributors
  * @license Licensed under MIT
@@ -4947,7 +4947,9 @@
           disableDirectDeselection: false,
           mode: 'default',
           multiple: false,
-          require: false
+          require: false,
+          // Royale
+          checkedIsSelected: false
         },
         showCheckboxes: false,
         sort: false
@@ -4955,33 +4957,58 @@
 
       // If checkbox mode, we must force auto-selecting children
       if (_this.config.selection.mode === 'checkbox') {
-        _this.config.selection.autoSelectChildren = true;
+        // Royale - Maintain the difference between checkbox and selected
+        if (_this.config.selection.checkedIsSelected) {
+          _this.config.selection.autoSelectChildren = true;
 
-        // In checkbox mode, checked=selected
-        _this.on('node.checked', function (node) {
-          if (!node.selected()) {
-            node.select(true);
-          }
-        });
-        _this.on('node.selected', function (node) {
-          if (!node.checked()) {
-            node.check(true);
-          }
-        });
-        _this.on('node.unchecked', function (node) {
-          if (node.selected()) {
-            node.deselect(true);
-          }
-        });
-        _this.on('node.deselected', function (node) {
-          if (node.checked()) {
-            node.uncheck(true);
-          }
-        });
+          // In checkbox mode, checked=selected
+          _this.on('node.checked', function (node) {
+            if (!node.selected()) {
+              node.select(true);
+            }
+          });
+          _this.on('node.selected', function (node) {
+            if (!node.checked()) {
+              node.check(true);
+            }
+          });
+          _this.on('node.unchecked', function (node) {
+            if (node.selected()) {
+              node.deselect(true);
+            }
+          });
+          _this.on('node.deselected', function (node) {
+            if (node.checked()) {
+              node.uncheck(true);
+            }
+          });
+        } else {
+          _this.on('node.checked', function (node) {
+            if (!node.checked()) {
+              node.checked(true);
+            }
+          });
+          _this.on('node.selected', function (node) {
+            if (!node.selected()) {
+              node.selected(true);
+            }
+          });
+          _this.on('node.unchecked', function (node) {
+            if (node.checked()) {
+              node.uncheck(true);
+            }
+          });
+          _this.on('node.deselected', function (node) {
+            if (node.selected()) {
+              node.deselect(true);
+            }
+          });
+        }
       }
 
       // If auto-selecting children, we must force multiselect
-      if (_this.config.selection.autoSelectChildren) {
+      // Royale
+      if (_this.config.selection.autoSelectChildren && _this.config.selection.checkedIsSelected) {
         _this.config.selection.multiple = true;
         _this.config.selection.autoDeselect = false;
       }

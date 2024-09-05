@@ -6,6 +6,7 @@
         "mocha": true
     },
     "parserOptions": {
+        // originalmente valor 8 = 2017
         "ecmaVersion": 8,
         "sourceType": "module"
     },
