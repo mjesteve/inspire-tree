@@ -1,7 +1,7 @@
 const path = require('path');
 const ts = require('typescript');
 
-const d = path.join(__dirname, '..', '..', 'inspire-tree.d.ts');
+const d = path.join(__dirname, '..', '..', 'inspire-tree-royale.d.ts');
 
 function compile(fileNames, options) {
     fileNames = Array.isArray(fileNames) ? fileNames : [fileNames];
