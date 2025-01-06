@@ -1,5 +1,25 @@
 # Changes to Inspire Tree
 
+# 7.0.11
+
+- Fixed `itree.parent` being lost on tree node clone.
+
+# 7.0.10
+
+- Additional fixes for recursive keys, and fixed recursion test oversight.
+
+# 7.0.9
+
+- Made `TreeNode#context` and `itree#parent` fields unenumerable to prevent recursion errors from libraries that deeply iterate object properties.
+
+# 7.0.8
+
+- Fixed `selectFirstAvailableNode` to look deeply.
+
+# 7.0.7
+
+- Fixed `selectFirstAvailableNode` trying to select unselectable nodes.
+
 # 7.0.6
 
 - Fixed typo in method type.

@@ -47,7 +47,7 @@ if (MIN) {
 }
 
 export default {
-    input: path.join('src', 'tree.js'),
+    input: path.join('src', 'tree-royale.js'),
     external: [/^lodash/],
     plugins: plugins,
     output: {

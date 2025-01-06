@@ -1,5 +1,5 @@
 /* Inspire Tree
- * @version 7.0.6-dev
+ * @version 7.0.11-dev
  * https://github.com/helion3/inspire-tree
  * @copyright Copyright 2015 Helion3, and other contributors
  * @license Licensed under MIT
@@ -287,7 +287,10 @@
       if (isFunction(get(tree, 'isTree')) && !tree.isTree(tree)) {
         throw new TypeError('Invalid tree instance.');
       }
-      _this._tree = tree;
+      Object.defineProperty(_assertThisInitialized(_this), '_tree', {
+        value: tree,
+        writable: true
+      });
       _this.length = 0;
       _this.batching = 0;
 
@@ -1619,6 +1622,12 @@
         clone[k] = cloneDeep(v);
       }
     });
+    if (!excludeKeys.includes('parent')) {
+      Object.defineProperty(clone, 'parent', {
+        value: itree.parent,
+        writable: true
+      });
+    }
     return clone;
   }
 
@@ -1659,7 +1668,10 @@
     function TreeNode(tree, source, excludeKeys) {
       var _this = this;
       _classCallCheck(this, TreeNode);
-      this._tree = tree;
+      Object.defineProperty(this, '_tree', {
+        value: tree,
+        writable: true
+      });
       if (source instanceof TreeNode) {
         excludeKeys = castArray(excludeKeys);
         excludeKeys.push('_tree');
@@ -3207,8 +3219,12 @@
     state.rendered = state.rendered || tree.defaultState.rendered;
     state.selected = state.selected || tree.defaultState.selected;
 
-    // Save parent, if any.
-    object.itree.parent = parent;
+    // Save parent, if any. This is unenumerable to prevent it showing in object.keys
+    // and leading to recursive errors, like in third party deepEqual functions.
+    Object.defineProperty(object.itree, 'parent', {
+      value: parent,
+      writable: true
+    });
 
     // Wrap
     object = _assign(new TreeNode(tree), object);
@@ -3250,7 +3266,13 @@
     each(array, function (node) {
       collection.push(objectToNode(tree, node, parent));
     });
-    collection._context = parent;
+
+    // Save parent, if any. This is unenumerable to prevent it showing in object.keys
+    // and leading to recursive errors, like in third party deepEqual functions.
+    Object.defineProperty(collection, '_context', {
+      value: parent,
+      writable: true
+    });
     collection.end();
     return collection;
   }
@@ -6306,18 +6328,20 @@
       }
 
       /**
-       * Select the first available node.
+       * Select the first available, selectable node.
        *
        * @return {TreeNode} Selected node object.
        */
     }, {
       key: "selectFirstAvailableNode",
       value: function selectFirstAvailableNode() {
-        var node = this.model.filterBy('available').get(0);
-        if (node) {
-          node.select();
+        var result = this.model.find(function (node) {
+          return node.available() && node.selectable();
+        });
+        if (result) {
+          result.select();
         }
-        return node;
+        return result;
       }
 
       /**
