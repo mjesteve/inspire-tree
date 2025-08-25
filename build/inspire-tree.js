@@ -4975,6 +4975,7 @@
           mode: 'default',
           multiple: false,
           require: false,
+          // Royale
           checkedIsSelected: false
         },
         showCheckboxes: false,
@@ -5872,6 +5873,10 @@
                 }
               });
             }
+
+            /* if (this.config.selection.require && !this.selected().length) {
+                this.selectFirstAvailableNode();
+            }*/
             _this3.autoSelectNode();
             var init = function init() {
               _this3.emit('model.loaded', _this3.model);
