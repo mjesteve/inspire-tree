@@ -1088,6 +1088,10 @@ class TreeNode {
             parent.markDirty();
         }
 
+        if (this.tree().config.selection.autoSelectOnNodeRemoval && this.selected()) {
+            this.tree().autoSelectNode();
+        }
+
         const pagination = parent ? parent.pagination() : this._tree.pagination();
         pagination.total--;
 
@@ -1151,6 +1155,8 @@ class TreeNode {
         if (!this.selected() && this.selectable()) {
             // Batch selection changes
             this._tree.batch();
+
+            this._tree.cacheSelectedNodes();
 
             if (this._tree.canAutoDeselect()) {
                 const oldVal = this._tree.config.selection.require;
