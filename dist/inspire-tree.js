@@ -4975,6 +4975,7 @@
           mode: 'default',
           multiple: false,
           require: false,
+          // Royale
           checkedIsSelected: false
         },
         showCheckboxes: false,
