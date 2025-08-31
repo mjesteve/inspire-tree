@@ -72,7 +72,6 @@ export interface Config {
         allow?: NodeIteratee;
         autoDeselect?: boolean;
         autoSelectChildren?: boolean;
-        autoSelectOnNodeRemoval?: boolean;
         disableDirectDeselection?: boolean;
         mode?: string;
         multiple?: boolean;
@@ -237,12 +236,10 @@ export interface InspireTree {
 export class InspireTree extends EventEmitter2 {
     addNode(node: NodeConfig): TreeNode;
     addNodes(node: Array<NodeConfig>): TreeNodes;
-    autoSelectNode(): TreeNode | null;
     available(): TreeNodes;
     blur(): TreeNodes;
     blurDeep(): TreeNodes;
     boundingNodes(first: TreeNode, second: TreeNode): [TreeNode, TreeNode];
-    cacheSelectedNodes(): void;
     canAutoDeselect(): boolean;
     checked(): TreeNodes;
     clean(): TreeNodes;
@@ -300,7 +297,6 @@ export class InspireTree extends EventEmitter2 {
     node(id: string|number): TreeNode;
     nodes(ids?: Array<string>|Array<number>): TreeNodes;
     pagination(): Pagination;
-    previouslySelectedNodes(): TreeNodes;
     recurseDown(iteratee: NodeIteratee): TreeNodes;
     reload(): Promise<TreeNodes>;
     removeAll(): InspireTree;
@@ -321,6 +317,7 @@ export class InspireTree extends EventEmitter2 {
     state(key: string, val: boolean): TreeNodes;
     stateDeep(key: string, val: boolean): TreeNodes;
     swap(node1: TreeNode, node2: TreeNode): TreeNodes;
+    toArray(): Array<any>;
     toArray(): Array<any>;
     tree(): InspireTree;
     unmute(events: Array<string>): InspireTree;

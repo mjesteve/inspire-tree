@@ -1,5 +1,5 @@
 /* Inspire Tree
- * @version 7.0.16-dev.1
+ * @version 7.0.11-dev
  * https://github.com/helion3/inspire-tree
  * @copyright Copyright 2015 Helion3, and other contributors
  * @license Licensed under MIT
@@ -2717,9 +2717,6 @@
           parent.refreshIndeterminateState();
           parent.markDirty();
         }
-        if (this.tree().config.selection.autoSelectOnNodeRemoval && this.selected()) {
-          this.tree().autoSelectNode();
-        }
         var pagination = parent ? parent.pagination() : this._tree.pagination();
         pagination.total--;
 
@@ -2791,7 +2788,6 @@
         if (!this.selected() && this.selectable()) {
           // Batch selection changes
           this._tree.batch();
-          this._tree.cacheSelectedNodes();
           if (this._tree.canAutoDeselect()) {
             var oldVal = this._tree.config.selection.require;
             this._tree.config.selection.require = false;
@@ -4970,7 +4966,6 @@
           allow: noop,
           autoDeselect: true,
           autoSelectChildren: false,
-          autoSelectOnNodeRemoval: true,
           disableDirectDeselection: false,
           mode: 'default',
           multiple: false,
@@ -5099,9 +5094,6 @@
       // Init the model
       _this.model = new TreeNodes(_assertThisInitialized(_this));
 
-      // Init nodes values
-      _this._previouslySelectedNodes = new TreeNodes(_assertThisInitialized(_this));
-
       // Load initial user data
       if (_this.config.data) {
         _this.load(_this.config.data);
@@ -5155,20 +5147,6 @@
       key: "applyChanges",
       value: function applyChanges() {
         return this.model.applyChanges();
-      }
-
-      /**
-       * Auto-selects first available node if selection is required yet no nodes are selected.
-       *
-       * @return {TreeNode|null} Newly selected TreeNode or null if no node selected
-       */
-    }, {
-      key: "autoSelectNode",
-      value: function autoSelectNode() {
-        if (this.config.selection.require && !this.selected().length) {
-          return this.selectFirstAvailableNode();
-        }
-        return null;
       }
 
       /**
@@ -5242,17 +5220,6 @@
       }
 
       /**
-       * Cache the currently selected nodes.
-       *
-       * @return {void}
-       */
-    }, {
-      key: "cacheSelectedNodes",
-      value: function cacheSelectedNodes() {
-        this._previouslySelectedNodes = this.selected();
-      }
-
-      /**
        * Check if the tree will auto-deselect currently selected nodes
        * when a new selection is made.
        *
@@ -5300,9 +5267,6 @@
           // Reset search effects (show node, collapse, reset matched)
           node.show().collapse().state('matched', false);
         });
-        if (this.config.selection.require) {
-          this.previouslySelectedNodes().select();
-        }
         this.end();
         return this;
       }
@@ -5873,11 +5837,9 @@
                 }
               });
             }
-
-            /* if (this.config.selection.require && !this.selected().length) {
-                this.selectFirstAvailableNode();
-            }*/
-            _this3.autoSelectNode();
+            if (_this3.config.selection.require && !_this3.selected().length) {
+              _this3.selectFirstAvailableNode();
+            }
             var init = function init() {
               _this3.emit('model.loaded', _this3.model);
               resolve(_this3.model);
@@ -6065,17 +6027,6 @@
       key: "pop",
       value: function pop() {
         return _map2(this, 'pop', arguments);
-      }
-
-      /**
-       * Get the previously selected nodes, if any.
-       *
-       * @return {TreeNodes} Previously selected nodes, or undefined.
-       */
-    }, {
-      key: "previouslySelectedNodes",
-      value: function previouslySelectedNodes() {
-        return this._previouslySelectedNodes;
       }
 
       /**
@@ -6303,14 +6254,6 @@
             }
             _this4.batch();
             matchProcessor(matches);
-            if (_this4.config.selection.require) {
-              var result = matches.find(function (node) {
-                return node.available() && node.selectable();
-              });
-              if (result) {
-                result.select();
-              }
-            }
             _this4.end();
             resolve(matches);
           }, reject);

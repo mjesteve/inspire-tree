@@ -1,27 +1,5 @@
 # Changes to Inspire Tree
 
-# 7.0.16
-
-- Added auto selection on search/clearSearch when selection required.
-
-# 7.0.15
-
-- Added `selection.autoSelectOnNodeRemoval` configuration option.
-
-# 7.0.14
-
-- Fixed selecting a node when selection is required and the only selected node is removed.
-
-# 7.0.13
-
-- Fixed distribution build.
-
-# 7.0.12
-
-- Added `tree.cacheSelectedNodes()` and `tree.previouslySelectedNodes()` to return nodes selected before the most recent.
-- Fixed defineProperty use on clone when parent key is excluded.
-- Removed a console.log.
-
 # 7.0.11
 
 - Fixed `itree.parent` being lost on tree node clone.

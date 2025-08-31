@@ -12,7 +12,7 @@ Desktop.ini
 $RECYCLE.BIN/
 node_modules/
 .tmp
-# build
+build
 coverage
 bower_components
 npm-debug.log

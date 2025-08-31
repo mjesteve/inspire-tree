@@ -86,7 +86,6 @@ class InspireTree extends EventEmitter2 {
                 allow: noop,
                 autoDeselect: true,
                 autoSelectChildren: false,
-                autoSelectOnNodeRemoval: true,
                 disableDirectDeselection: false,
                 mode: 'default',
                 multiple: false,
@@ -189,9 +188,6 @@ class InspireTree extends EventEmitter2 {
         // Init the model
         this.model = new TreeNodes(this);
 
-        // Init nodes values
-        this._previouslySelectedNodes = new TreeNodes(this);
-
         // Load initial user data
         if (this.config.data) {
             this.load(this.config.data);
@@ -239,19 +235,6 @@ class InspireTree extends EventEmitter2 {
      */
     applyChanges() {
         return this.model.applyChanges();
-    }
-
-    /**
-     * Auto-selects first available node if selection is required yet no nodes are selected.
-     *
-     * @return {TreeNode|null} Newly selected TreeNode or null if no node selected
-     */
-    autoSelectNode() {
-        if (this.config.selection.require && !this.selected().length) {
-            return this.selectFirstAvailableNode();
-        }
-
-        return null;
     }
 
     /**
@@ -316,15 +299,6 @@ class InspireTree extends EventEmitter2 {
     }
 
     /**
-     * Cache the currently selected nodes.
-     *
-     * @return {void}
-     */
-    cacheSelectedNodes() {
-        this._previouslySelectedNodes = this.selected();
-    }
-
-    /**
      * Check if the tree will auto-deselect currently selected nodes
      * when a new selection is made.
      *
@@ -365,10 +339,6 @@ class InspireTree extends EventEmitter2 {
             // Reset search effects (show node, collapse, reset matched)
             node.show().collapse().state('matched', false);
         });
-
-        if (this.config.selection.require) {
-            this.previouslySelectedNodes().select();
-        }
 
         this.end();
 
@@ -873,7 +843,9 @@ class InspireTree extends EventEmitter2 {
                     });
                 }
 
-                this.autoSelectNode();
+                if (this.config.selection.require && !this.selected().length) {
+                    this.selectFirstAvailableNode();
+                }
 
                 const init = () => {
                     this.emit('model.loaded', this.model);
@@ -1046,15 +1018,6 @@ class InspireTree extends EventEmitter2 {
      */
     pop() {
         return map(this, 'pop', arguments);
-    }
-
-    /**
-     * Get the previously selected nodes, if any.
-     *
-     * @return {TreeNodes} Previously selected nodes, or undefined.
-     */
-    previouslySelectedNodes() {
-        return this._previouslySelectedNodes;
     }
 
     /**
@@ -1263,13 +1226,6 @@ class InspireTree extends EventEmitter2 {
                 this.batch();
 
                 matchProcessor(matches);
-
-                if (this.config.selection.require) {
-                    const result = matches.find(node => node.available() && node.selectable());
-                    if (result) {
-                        result.select();
-                    }
-                }
 
                 this.end();
 
