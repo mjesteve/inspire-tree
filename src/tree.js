@@ -299,6 +299,15 @@ class InspireTree extends EventEmitter2 {
     }
 
     /**
+     * Cache the currently selected nodes.
+     *
+     * @return {void}
+     */
+    cacheSelectedNodes() {
+        this._previouslySelectedNodes = this.selected();
+    }
+
+    /**
      * Check if the tree will auto-deselect currently selected nodes
      * when a new selection is made.
      *

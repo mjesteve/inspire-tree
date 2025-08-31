@@ -1,5 +1,5 @@
 /* Inspire Tree
- * @version 7.0.11-dev
+ * @version 7.0.16-dev.1
  * https://github.com/helion3/inspire-tree
  * @copyright Copyright 2015 Helion3, and other contributors
  * @license Licensed under MIT
